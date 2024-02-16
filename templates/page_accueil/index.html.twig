@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+        <h1> Réparations proposées </h1>
+        <table class="table table-hover">
+        <tr class="table-dark">
+            <td> Code</td>
+            <td>Prix moyen</td>
+            <td>Nom reparation </td>
+        </tr>
+        {% for reparation in reparations %} 
+            <tr class="table-secondary">
+                <td> {{ reparation.code }}</td>
+                <td>  {{ reparation.prixMoyen }} € </td>
+                <td> {{ reparation.nomReparation }} </td>
+            </tr>    
+        {% endfor %}
+        </table>
+        <h1> Quelques avis clients </h1>
+        <table class="table table-hover">
+            <tr class="table-dark">
+                <td> User</td>
+                <td>Note sur 5</td>
+                <td>Titre </td>
+                <td>Message </td>
+            </tr>
+            {% for avis in aviss %} 
+                <tr class="table-secondary">
+                    <td> {{ avis.user.email }}</td>
+                    <td>  {{ avis.note }}  </td>
+                    <td> {{ avis.titre }} </td>
+                    <td> {{ avis.contenuMessageAvis }} </td>
+                </tr>    
+            {% endfor %}
+        </table>
+
+
+        <h1>Laisser un avis</h1>
+
+        {% if is_granted('ROLE_USER') %}
+        {% form_theme formAvis 'bootstrap_4_layout.html.twig' %}
+                    {{ form_start(formAvis) }}
+                        {% if isOnMainPage == true %}
+                            {% do formAvis.user.setRendered() %}
+                        {% endif %}
+                        
+                    
+                        {{form_row(formAvis.note, {
+                            'attr': {
+                                'placeholder': "Note sur 5"
+                            }
+                        })}}
+                        {{form_row(formAvis.titre, {
+                            'attr': {
+                                'placeholder': "Sujet"
+                            }
+                        })}}
+                        {{form_row(formAvis.contenuMessageAvis, {
+                            'attr': {
+                                'placeholder': "Ecrivez un message ici"
+                            }
+                        })}}
+                        {% if isOnMainPage == true %}
+                                {% do formAvis.approved.setRendered() %}
+                        {% endif %}
+                        <button type="submit" class="btn btn-success">
+                            Enregistrer l'avis
+                        </button>
+                {{ form_end(formAvis) }}
+
+        {% else %}
+            <a href="{{ path('app_login') }}"> Veuillez vous connecter afin de laisser un avis ! </a>
+        {% endif %}           
+
+
+{% endblock %}

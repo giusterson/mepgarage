@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<section class="reparations">
+        <article>
+            
+
+            <div> Code réparation : {{reparation.code}} </div>
+            <div> Prix moyen : {{reparation.prixMoyen}} </div>
+            <div>  Nom de la réparation :{{reparation.nomReparation}}</div>
+         </article>
+        <button class="btn bn-primary"> <a href="{{ path('main')}}"> Retour à la page d'accueil</a>  </button>
+</section>
+{% endblock %}
